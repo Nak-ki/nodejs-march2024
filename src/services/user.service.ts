@@ -39,8 +39,7 @@ class UserService {
 
   public async updateById(userId: number, dto: Partial<IUser>): Promise<IUser> {
     await this.getById(userId);
-    const user = await userRepository.updateById(userId, dto);
-    return user;
+    return await userRepository.updateById(userId, dto);
   }
 
   public async deleteById(userId: number): Promise<void> {
