@@ -2,3 +2,5 @@
 nodejs-march2024.iml
 node_modules
 dist
+
+.env
