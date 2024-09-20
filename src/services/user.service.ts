@@ -1,32 +1,11 @@
 import { ApiError } from "../errors/api-error";
+import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
   public async getList(): Promise<IUser[]> {
     return await userRepository.getList();
-  }
-
-  public async create(dto: Partial<IUser>): Promise<IUser> {
-    // if (!dto.name || dto.name.length < 3) {
-    //   throw new ApiError(
-    //     "Name is required and should be at least 3 characters long",
-    //     400,
-    //   );
-    // }
-    // if (!dto.email || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(dto.email)) {
-    //   throw new ApiError("Email is required and should be valid", 400);
-    // }
-    // if (
-    //   !dto.password ||
-    //   !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(dto.password)
-    // ) {
-    //   throw new ApiError(
-    //     "Password is required and should be at least 6 characters long",
-    //     400,
-    //   );
-    // }
-    return await userRepository.create(dto);
   }
 
   public async getById(userId: string): Promise<IUser> {
@@ -37,14 +16,20 @@ class UserService {
     return user;
   }
 
-  public async updateById(userId: string, dto: IUser): Promise<IUser> {
-    await this.getById(userId);
-    return await userRepository.updateById(userId, dto);
+  public async getMe(jwtPayload: ITokenPayload): Promise<IUser> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return user;
   }
 
-  public async deleteById(userId: string): Promise<void> {
-    await this.getById(userId);
-    await userRepository.deleteById(userId);
+  public async updateMe(jwtPayload: ITokenPayload, dto: IUser): Promise<IUser> {
+    return await userRepository.updateById(jwtPayload.userId, dto);
+  }
+
+  public async deleteMe(jwtPayload: ITokenPayload): Promise<void> {
+    await userRepository.deleteById(jwtPayload.userId);
   }
 }
 
