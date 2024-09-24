@@ -9,6 +9,7 @@ const TokenSchema = new Schema(
     refreshToken: { type: String, required: true },
 
     _userId: { type: Schema.Types.ObjectId, required: true, ref: User },
+    deviceId: { type: String, required: true },
   },
   {
     timestamps: true,

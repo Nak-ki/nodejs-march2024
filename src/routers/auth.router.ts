@@ -25,4 +25,16 @@ router.post(
   authController.refresh,
 );
 
+router.delete(
+  "/logout",
+  authMiddleware.checkAccessToken,
+  authController.logout,
+);
+
+router.delete(
+  "/logout-completely",
+  authMiddleware.checkAccessToken,
+  authController.logoutCompletely,
+);
+
 export const authRouter = router;

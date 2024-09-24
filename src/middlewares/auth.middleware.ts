@@ -54,7 +54,7 @@ class AuthMiddleware {
         throw new ApiError("Token is not valid", 401);
       }
       req.res.locals.jwtPayload = payload;
-      req.res.locals.jwtTokens = pair;
+      req.res.locals.jwtTokens = refreshToken;
 
       next();
     } catch (e) {

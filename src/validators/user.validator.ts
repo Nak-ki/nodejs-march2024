@@ -17,6 +17,7 @@ export class UserValidator {
       .trim()
       .required(),
     age: Joi.number().min(14).max(100),
+    deviceId: Joi.string().required(),
   });
 
   public static updateUser: Joi.ObjectSchema<Partial<IUser>> = Joi.object({
@@ -35,5 +36,6 @@ export class UserValidator {
       .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
       .trim()
       .required(),
+    deviceId: Joi.string().required(),
   });
 }

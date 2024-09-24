@@ -5,11 +5,13 @@ export interface IToken {
   accessToken: string;
   refreshToken: string;
   _userId: string;
+  deviceId: string;
 }
 
 export interface ITokenPayload {
   userId: string;
   role: RoleEnum;
+  deviceId: string;
 }
 
 export interface ITokenPair {
