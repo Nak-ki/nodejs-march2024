@@ -14,9 +14,10 @@ class TokenRepository {
     await Token.deleteOne({ _id: id });
   }
 
-  public async deleteByParams(params: Partial<IToken>): Promise<void> {
+  public async deleteOneByParams(params: Partial<IToken>): Promise<void> {
     await Token.deleteOne(params);
   }
+
   public async deleteManyByParams(params: Partial<IToken>): Promise<void> {
     await Token.deleteMany(params);
   }

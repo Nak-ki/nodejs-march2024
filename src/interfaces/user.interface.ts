@@ -14,19 +14,25 @@ export interface IUser {
   updatedAt?: Date;
 }
 
-export interface ISignUp {
-  name: string;
-  email: string;
-  password: string;
-  age: number;
-  phone?: string;
-  deviceId: string;
-}
+export type ISignIn = Pick<IUser, "email" | "password">;
 
-export interface ISignIn {
-  email: string;
-  password: string;
-  deviceId: string;
-}
+export type IResetPasswordSend = Pick<IUser, "email">;
+
+export type IResetPasswordSet = Pick<IUser, "password"> & { token: string };
+
+// export interface ISignUp {
+//   name: string;
+//   email: string;
+//   password: string;
+//   age: number;
+//   phone?: string;
+//   deviceId: string;
+// }
+//
+// export interface ISignIn {
+//   email: string;
+//   password: string;
+//   deviceId: string;
+// }
 
 // export type ISignIn = Pick<IUser, "email" | "password">;

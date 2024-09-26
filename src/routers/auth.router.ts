@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { authController } from "../controllers/auth.controller";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { UserValidator } from "../validators/user.validator";
@@ -32,9 +33,21 @@ router.delete(
 );
 
 router.delete(
-  "/logout-completely",
+  "/logout/all",
   authMiddleware.checkAccessToken,
-  authController.logoutCompletely,
+  authController.logoutAll,
 );
 
+router.post("/forgot-password", authController.forgotPasswordSendEmail);
+router.put(
+  "/forgot-password",
+  authMiddleware.checkActionToken(ActionTokenTypeEnum.FORGOT_PASSWORD),
+  authController.forgotPasswordSet,
+);
+
+router.put(
+  "/verify-email",
+  authMiddleware.checkActionToken(ActionTokenTypeEnum.VERIFY_EMAIL),
+  authController.verifyEmail,
+);
 export const authRouter = router;
