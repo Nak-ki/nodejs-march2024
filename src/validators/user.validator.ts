@@ -36,4 +36,15 @@ export class UserValidator {
       .trim()
       .required(),
   });
+
+  public static changePassword = Joi.object({
+    oldPassword: Joi.string()
+      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+      .trim()
+      .required(),
+    password: Joi.string()
+      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+      .trim()
+      .required(),
+  });
 }
