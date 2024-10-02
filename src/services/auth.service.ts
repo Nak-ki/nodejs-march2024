@@ -203,7 +203,7 @@ class AuthService {
       }
     }
     await oldPasswordRepository.create({
-      password: dto.oldPassword,
+      password: user.password,
       _userId: user._id,
     });
     const password = await passwordService.hashPassword(dto.password);
