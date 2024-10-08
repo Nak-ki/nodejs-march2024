@@ -15,8 +15,6 @@ class UserRepository {
       // ];
     }
 
-    // TODO - Add sorting
-
     const skip = query.limit * (query.page - 1);
     const sortObject: { [key: string]: SortOrder } = {};
     if (query.orderBy) {
