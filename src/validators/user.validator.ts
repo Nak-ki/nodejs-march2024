@@ -1,5 +1,7 @@
 import Joi from "joi";
 
+import { OrderEnum } from "../enums/order.enum";
+import { UserListOrderByEnum } from "../enums/user-list-order-by.enum";
 import { IUser } from "../interfaces/user.interface";
 
 export class UserValidator {
@@ -46,5 +48,13 @@ export class UserValidator {
       .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
       .trim()
       .required(),
+  });
+
+  public static listQuery = Joi.object({
+    limit: Joi.number().min(1).max(100).default(10),
+    page: Joi.number().min(1).default(1),
+    search: Joi.string().trim().lowercase(),
+    order: Joi.string().valid(...Object.values(OrderEnum)),
+    orderBy: Joi.string().valid(...Object.values(UserListOrderByEnum)),
   });
 }

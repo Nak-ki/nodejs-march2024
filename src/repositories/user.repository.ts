@@ -1,9 +1,38 @@
-import { IUser } from "../interfaces/user.interface";
+import { FilterQuery, SortOrder } from "mongoose";
+
+import { UserListOrderByEnum } from "../enums/user-list-order-by.enum";
+import { IUser, IUserListQuery } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 class UserRepository {
-  public async getList(): Promise<IUser[]> {
-    return await User.find({});
+  public async getList(query: IUserListQuery): Promise<[IUser[], number]> {
+    const filterObj: FilterQuery<IUser> = {};
+    if (query.search) {
+      filterObj.name = { $regex: query.search, $options: "i" };
+      // filterObj.$or = [
+      //   { name: { $regex: query.search, $options: "i" } },
+      //   { email: { $regex: query.search, $options: "i" } },
+      // ];
+    }
+
+    // TODO - Add sorting
+
+    const skip = query.limit * (query.page - 1);
+    const sortObject: { [key: string]: SortOrder } = {};
+    if (query.orderBy) {
+      switch (query.orderBy) {
+        case UserListOrderByEnum.AGE:
+          sortObject.age = query.order;
+          break;
+        case UserListOrderByEnum.NAME:
+          sortObject.name = query.order;
+          break;
+      }
+    }
+    return await Promise.all([
+      User.find(filterObj).limit(query.limit).skip(skip).sort(sortObject),
+      User.countDocuments(filterObj),
+    ]);
   }
 
   public async create(dto: Partial<IUser>): Promise<IUser> {
